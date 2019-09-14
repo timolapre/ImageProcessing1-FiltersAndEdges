@@ -152,9 +152,12 @@
             // 
             this.ContrastAdjustment.Location = new System.Drawing.Point(17, 126);
             this.ContrastAdjustment.Margin = new System.Windows.Forms.Padding(4);
+            this.ContrastAdjustment.Maximum = 25;
+            this.ContrastAdjustment.Minimum = 1;
             this.ContrastAdjustment.Name = "ContrastAdjustment";
             this.ContrastAdjustment.Size = new System.Drawing.Size(139, 56);
             this.ContrastAdjustment.TabIndex = 8;
+            this.ContrastAdjustment.Value = 1;
             this.ContrastAdjustment.Scroll += new System.EventHandler(this.ContrastAdjustment_Scroll);
             // 
             // ContrastAdjustmentText
