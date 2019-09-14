@@ -99,6 +99,19 @@ namespace INFOIBV
                     int blue = truncate((int)(ContrastCorrection * (updatedColor.B - 128) + 128));
                     updatedColor = Color.FromArgb(red, green, blue);
 
+                    if (BinaryImage.Checked)
+                    {
+                        //Debug.WriteLine(toGrayscale(pixelColor) + " " + int.Parse(Threshold.Text));
+                        if(toGrayscale(pixelColor) > int.Parse(Threshold.Text))
+                        {
+                            updatedColor = Color.FromArgb(255, 255, 255);
+                        }
+                        else
+                        {
+                            updatedColor = Color.FromArgb(0, 0, 0);
+                        }
+                    }
+
                     Image[x, y] = updatedColor;                             // Set the new pixel color at coordinate (x,y)
 
                     //GaussianFilter

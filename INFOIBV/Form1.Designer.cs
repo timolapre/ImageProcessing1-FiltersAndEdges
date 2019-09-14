@@ -46,8 +46,9 @@
             this.LinearFiltering = new System.Windows.Forms.TextBox();
             this.NonlinearFiltering = new System.Windows.Forms.TextBox();
             this.EdgeDetection = new System.Windows.Forms.TextBox();
-            this.Thresholding = new System.Windows.Forms.TextBox();
             this.GaussianFilter = new System.Windows.Forms.CheckBox();
+            this.BinaryImage = new System.Windows.Forms.CheckBox();
+            this.Threshold = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ContrastAdjustment)).BeginInit();
@@ -227,17 +228,6 @@
             this.EdgeDetection.TabIndex = 16;
             this.EdgeDetection.Text = "Edge Detection";
             // 
-            // Thresholding
-            // 
-            this.Thresholding.BackColor = System.Drawing.SystemColors.Menu;
-            this.Thresholding.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Thresholding.Location = new System.Drawing.Point(948, 65);
-            this.Thresholding.Margin = new System.Windows.Forms.Padding(4);
-            this.Thresholding.Name = "Thresholding";
-            this.Thresholding.Size = new System.Drawing.Size(133, 15);
-            this.Thresholding.TabIndex = 17;
-            this.Thresholding.Text = "Thresholding";
-            // 
             // GaussianFilter
             // 
             this.GaussianFilter.AutoSize = true;
@@ -249,13 +239,33 @@
             this.GaussianFilter.Text = "Gaussian Filter";
             this.GaussianFilter.UseVisualStyleBackColor = true;
             // 
+            // BinaryImage
+            // 
+            this.BinaryImage.AutoSize = true;
+            this.BinaryImage.Location = new System.Drawing.Point(936, 66);
+            this.BinaryImage.Margin = new System.Windows.Forms.Padding(4);
+            this.BinaryImage.Name = "BinaryImage";
+            this.BinaryImage.Size = new System.Drawing.Size(112, 21);
+            this.BinaryImage.TabIndex = 19;
+            this.BinaryImage.Text = "Binary Image";
+            this.BinaryImage.UseVisualStyleBackColor = true;
+            // 
+            // Threshold
+            // 
+            this.Threshold.Location = new System.Drawing.Point(936, 95);
+            this.Threshold.Margin = new System.Windows.Forms.Padding(4);
+            this.Threshold.Name = "Threshold";
+            this.Threshold.Size = new System.Drawing.Size(49, 22);
+            this.Threshold.TabIndex = 20;
+            // 
             // INFOIBV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1403, 709);
+            this.Controls.Add(this.Threshold);
+            this.Controls.Add(this.BinaryImage);
             this.Controls.Add(this.GaussianFilter);
-            this.Controls.Add(this.Thresholding);
             this.Controls.Add(this.EdgeDetection);
             this.Controls.Add(this.NonlinearFiltering);
             this.Controls.Add(this.LinearFiltering);
@@ -305,8 +315,9 @@
         private System.Windows.Forms.TextBox LinearFiltering;
         private System.Windows.Forms.TextBox NonlinearFiltering;
         private System.Windows.Forms.TextBox EdgeDetection;
-        private System.Windows.Forms.TextBox Thresholding;
         private System.Windows.Forms.CheckBox GaussianFilter;
+        private System.Windows.Forms.CheckBox BinaryImage;
+        private System.Windows.Forms.TextBox Threshold;
     }
 }
 
