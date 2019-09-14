@@ -48,7 +48,6 @@
             this.EdgeDetection = new System.Windows.Forms.TextBox();
             this.Thresholding = new System.Windows.Forms.TextBox();
             this.GaussianFilter = new System.Windows.Forms.CheckBox();
-            this.GFtext = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ContrastAdjustment)).BeginInit();
@@ -82,7 +81,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(17, 204);
+            this.pictureBox1.Location = new System.Drawing.Point(51, 204);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(559, 481);
@@ -119,7 +118,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(637, 204);
+            this.pictureBox2.Location = new System.Drawing.Point(739, 204);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(580, 481);
@@ -152,7 +151,7 @@
             // 
             this.ContrastAdjustment.Location = new System.Drawing.Point(17, 126);
             this.ContrastAdjustment.Margin = new System.Windows.Forms.Padding(4);
-            this.ContrastAdjustment.Maximum = 25;
+            this.ContrastAdjustment.Maximum = 128;
             this.ContrastAdjustment.Minimum = 1;
             this.ContrastAdjustment.Name = "ContrastAdjustment";
             this.ContrastAdjustment.Size = new System.Drawing.Size(139, 56);
@@ -250,20 +249,11 @@
             this.GaussianFilter.Text = "Gaussian Filter";
             this.GaussianFilter.UseVisualStyleBackColor = true;
             // 
-            // GFtext
-            // 
-            this.GFtext.Location = new System.Drawing.Point(1224, 204);
-            this.GFtext.Multiline = true;
-            this.GFtext.Name = "GFtext";
-            this.GFtext.Size = new System.Drawing.Size(176, 173);
-            this.GFtext.TabIndex = 19;
-            // 
             // INFOIBV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1403, 709);
-            this.Controls.Add(this.GFtext);
             this.Controls.Add(this.GaussianFilter);
             this.Controls.Add(this.Thresholding);
             this.Controls.Add(this.EdgeDetection);
@@ -317,7 +307,6 @@
         private System.Windows.Forms.TextBox EdgeDetection;
         private System.Windows.Forms.TextBox Thresholding;
         private System.Windows.Forms.CheckBox GaussianFilter;
-        private System.Windows.Forms.TextBox GFtext;
     }
 }
 

@@ -28,7 +28,7 @@ namespace INFOIBV
 
         private void LoadImageButton_Click(object sender, EventArgs e)
         {
-           if (openImageDialog.ShowDialog() == DialogResult.OK)             // Open File Dialog
+            if (openImageDialog.ShowDialog() == DialogResult.OK)             // Open File Dialog
             {
                 string file = openImageDialog.FileName;                     // Get the file name
                 imageFileName.Text = file;                                  // Show file name
@@ -74,6 +74,7 @@ namespace INFOIBV
                 sigma = float.Parse(this.GFsigma.Text);
                 size = int.Parse(this.GFsize.Text); // minimum size: 1
                 Gaussiankernel = GaussianKernel(size, sigma);
+                ImageWithGaussianFilter = new int[InputImage.Size.Width, InputImage.Size.Height];
             }
 
             // Run filters
@@ -99,32 +100,40 @@ namespace INFOIBV
                     updatedColor = Color.FromArgb(red, green, blue);
 
                     Image[x, y] = updatedColor;                             // Set the new pixel color at coordinate (x,y)
-                    progressBar.PerformStep();                              // Increment progress bar
 
                     //GaussianFilter
                     if (GaussianFilter.Checked)
                     {
-                        ImageWithGaussianFilter = new int[InputImage.Size.Width, InputImage.Size.Height];
                         float value = 0;
                         for (int n = -size; n < size; n++)
                         {
                             for (int m = -size; m < size; m++)
                             {
-                                value += Gaussiankernel[n, m] * toGrayscale(Image[x + n, y + m]);
+                                //Debug.Write(Gaussiankernel[n+size, m + size] + " " + toGrayscale(Image[truncate(x + n), truncate(y + m)]) + " ");
+                                if (x + n >= InputImage.Size.Width || x + n < 0 || y + m >= InputImage.Size.Height || y + m < 0)
+                                    continue;
+                                value += Gaussiankernel[n+size, m+size] * toGrayscale(Image[x + n, y + m]);
                             }
                         }
+                        //Debug.WriteLine(value);
                         ImageWithGaussianFilter[x, y] = (int)value;
                     }
 
+                    progressBar.PerformStep();                              // Increment progress bar
                 }
             }
 
-            for (int x = 0; x < InputImage.Size.Width; x++)
+            //Gaussian Filter
+            if (GaussianFilter.Checked)
             {
-                for (int y = 0; y < InputImage.Size.Height; y++)
+                for (int x = 0; x < InputImage.Size.Width; x++)
                 {
-                    Color updatedColor = Color.FromArgb(ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y]);
-                    Image[x, y] = updatedColor;
+                    for (int y = 0; y < InputImage.Size.Height; y++)
+                    {
+                        ImageWithGaussianFilter[x, y] = truncate(ImageWithGaussianFilter[x, y]);
+                        Color updatedColor = Color.FromArgb(ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y]);
+                        Image[x, y] = updatedColor;
+                    }
                 }
             }
             //==========================================================================================
@@ -155,13 +164,26 @@ namespace INFOIBV
 
         private float [,] GaussianKernel(int size, float sigma)
         {
+            float total = 0;
+            float isit1 = 0;
             float[,] kernel = new float[size*2+1, size*2+1];
             for (int x = -size; x <= size; x++)
             {
                 for (int y = -size; y <= size; y++)
                 {
-                    kernel[x + size, y + size] = (float)((1 / (2 * Math.PI * sigma * sigma)) * Math.Pow(Math.E, -(Math.Pow(x, 2) + Math.Pow(y, 2) / 2 * Math.Pow(sigma, 2))));
+                    kernel[x + size, y + size] = (float)((1 / (2 * Math.PI * Math.Pow(sigma,2))) * Math.Pow(Math.E, -((Math.Pow(x, 2) + Math.Pow(y, 2)) / ( 2 * Math.Pow(sigma, 2)))));
+                    total += kernel[x + size, y + size];
                 }
+            }
+            for (int x = -size; x <= size; x++)
+            {
+                for (int y = -size; y <= size; y++)
+                {
+                    kernel[x + size, y + size] = (1/total)*kernel[x + size, y + size];
+                    Debug.Write(kernel[x + size, y + size] + " ");
+                    isit1 += kernel[x + size, y + size];
+                }
+                Debug.WriteLine("");
             }
             return kernel;
         }
