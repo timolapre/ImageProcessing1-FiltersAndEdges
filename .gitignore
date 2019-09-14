@@ -1,0 +1,10 @@
+
+INFOIBV/obj/x86/Debug/INFOIBV.pdb
+*.pdb
+*.cache
+*.exe
+*.ide
+*.ide-shm
+*.ide-wal
+*.sqlite
+*.user

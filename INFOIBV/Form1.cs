@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace INFOIBV
 {
@@ -14,6 +15,11 @@ namespace INFOIBV
     {
         private Bitmap InputImage;
         private Bitmap OutputImage;
+
+        float sigma;
+        int size;
+        float[,] Gaussiankernel;
+        int[,] ImageWithGaussianFilter;
 
         public INFOIBV()
         {
@@ -62,8 +68,15 @@ namespace INFOIBV
             //==========================================================================================
             // TODO: include here your own code
 
-            // example: create a negative image
-            GFtext.Text = "";
+            //GaussianFilter
+            if (GaussianFilter.Checked)
+            {
+                sigma = float.Parse(this.GFsigma.Text);
+                size = int.Parse(this.GFsize.Text); // minimum size: 1
+                Gaussiankernel = GaussianKernel(size, sigma);
+            }
+
+            // Run filters
             for (int x = 0; x < InputImage.Size.Width; x++)
             {
                 for (int y = 0; y < InputImage.Size.Height; y++)
@@ -74,7 +87,7 @@ namespace INFOIBV
                     //Grayscale
                     if (Grayscale.Checked)
                     {
-                        int grayscale = (int)((pixelColor.R * 0.3f) + (pixelColor.G * 0.59f) + (pixelColor.B * 0.11f));
+                        int grayscale = toGrayscale(pixelColor);
                         updatedColor = Color.FromArgb(grayscale, grayscale, grayscale); //Color.FromArgb(255 - pixelColor.R, 255 - pixelColor.G, 255 - pixelColor.B); // Negative image
                     }
 
@@ -85,17 +98,33 @@ namespace INFOIBV
                     int blue = truncate((int)(ContrastCorrection * (updatedColor.B - 128) + 128));
                     updatedColor = Color.FromArgb(red, green, blue);
 
+                    Image[x, y] = updatedColor;                             // Set the new pixel color at coordinate (x,y)
+                    progressBar.PerformStep();                              // Increment progress bar
+
                     //GaussianFilter
                     if (GaussianFilter.Checked)
                     {
-                        GFtext.Text = "a";
-                        int sigma = int.Parse(GFsigma.Text);
-                        int size = int.Parse(GFsize.Text); // minimum size: 3
-                        int[,] Gaussiankernel = GaussianKernel(size, sigma);
+                        ImageWithGaussianFilter = new int[InputImage.Size.Width, InputImage.Size.Height];
+                        float value = 0;
+                        for (int n = -size; n < size; n++)
+                        {
+                            for (int m = -size; m < size; m++)
+                            {
+                                value += Gaussiankernel[n, m] * toGrayscale(Image[x + n, y + m]);
+                            }
+                        }
+                        ImageWithGaussianFilter[x, y] = (int)value;
                     }
 
-                    Image[x, y] = updatedColor;                             // Set the new pixel color at coordinate (x,y)
-                    progressBar.PerformStep();                              // Increment progress bar
+                }
+            }
+
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    Color updatedColor = Color.FromArgb(ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y]);
+                    Image[x, y] = updatedColor;
                 }
             }
             //==========================================================================================
@@ -113,20 +142,25 @@ namespace INFOIBV
             progressBar.Visible = false;                                    // Hide progress bar
         }
 
+        private int toGrayscale(Color pixelColor)
+        {
+            int grayscale = (int)((pixelColor.R * 0.3f) + (pixelColor.G * 0.59f) + (pixelColor.B * 0.11f));
+            return grayscale;
+        }
+
         private int truncate(int value)
         {
             return Math.Max(Math.Min(value, 255),0);
         }
 
-        private int [,] GaussianKernel(int size, int sigma)
+        private float [,] GaussianKernel(int size, float sigma)
         {
-            int[,] kernel = new int[size, size];
-            int offset = (size - 1) / 2;
-            for (int x = -offset; x <= offset; x++)
+            float[,] kernel = new float[size*2+1, size*2+1];
+            for (int x = -size; x <= size; x++)
             {
-                for (int y = -offset; y <= offset; y++)
+                for (int y = -size; y <= size; y++)
                 {
-                    kernel[x + offset,y + offset] = (int)((1 / 2 * Math.PI * sigma) * Math.Pow(Math.E, -(Math.Pow(x, 2) + Math.Pow(y, 2) / 2 * Math.Pow(sigma, 2))));
+                    kernel[x + size, y + size] = (float)((1 / (2 * Math.PI * sigma * sigma)) * Math.Pow(Math.E, -(Math.Pow(x, 2) + Math.Pow(y, 2) / 2 * Math.Pow(sigma, 2))));
                 }
             }
             return kernel;
