@@ -61,6 +61,7 @@ namespace INFOIBV
 
             //==========================================================================================
             // TODO: include here your own code
+
             // example: create a negative image
             GFtext.Text = "";
             for (int x = 0; x < InputImage.Size.Width; x++)
@@ -88,8 +89,9 @@ namespace INFOIBV
                     if (GaussianFilter.Checked)
                     {
                         GFtext.Text = "a";
-                        //int GFvalue = GaussianFunction(x, y);
-                        //GFtext.Text += GFvalue + " ";
+                        int sigma = int.Parse(GFsigma.Text);
+                        int size = int.Parse(GFsize.Text); // minimum size: 3
+                        int[,] Gaussiankernel = GaussianKernel(size, sigma);
                     }
 
                     Image[x, y] = updatedColor;                             // Set the new pixel color at coordinate (x,y)
@@ -116,12 +118,18 @@ namespace INFOIBV
             return Math.Max(Math.Min(value, 255),0);
         }
 
-        private int GaussianFunction(int x, int y)
+        private int [,] GaussianKernel(int size, int sigma)
         {
-            int sigma = int.Parse(GFsigma.Text);
-            int size = int.Parse(GFsize.Text);
-            int gxy = (int)((1 / 2 * Math.PI * sigma) * Math.Pow(Math.E, -(Math.Pow(x, 2) + Math.Pow(y, 2) / 2 * Math.Pow(sigma, 2))));
-            return gxy;
+            int[,] kernel = new int[size, size];
+            int offset = (size - 1) / 2;
+            for (int x = -offset; x <= offset; x++)
+            {
+                for (int y = -offset; y <= offset; y++)
+                {
+                    kernel[x + offset,y + offset] = (int)((1 / 2 * Math.PI * sigma) * Math.Pow(Math.E, -(Math.Pow(x, 2) + Math.Pow(y, 2) / 2 * Math.Pow(sigma, 2))));
+                }
+            }
+            return kernel;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
