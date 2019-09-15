@@ -163,12 +163,12 @@ namespace INFOIBV
                 {
                     if (x >= InputImage.Size.Width - size || x < size || y >= InputImage.Size.Height - size || y < size)
                     {
-                        int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size), size);
-                        int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size), size);
-                        Image[x, y] = Color.FromArgb(ImageWithkernel[x2, y2], ImageWithkernel[x2, y2], ImageWithkernel[x2, y2]);
-                        continue;
+                        //int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size), size);
+                        //int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size), size);
+                        //Image[x, y] = Color.FromArgb(ImageWithkernel[x2, y2], ImageWithkernel[x2, y2], ImageWithkernel[x2, y2]);
+                        //continue;
                     }
-                    int color = truncate(ImageWithkernel[Math.Max(Math.Min(x,),0), y]);
+                    int color = truncate(ImageWithkernel[x,y]);
                     Color updatedColor = Color.FromArgb(color, color, color);
                     Image[x, y] = updatedColor;
                 }
