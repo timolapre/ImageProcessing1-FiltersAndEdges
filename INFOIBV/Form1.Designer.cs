@@ -82,10 +82,10 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(51, 204);
+            this.pictureBox1.Location = new System.Drawing.Point(28, 190);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(559, 481);
+            this.pictureBox1.Size = new System.Drawing.Size(550, 550);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -119,10 +119,10 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(739, 204);
+            this.pictureBox2.Location = new System.Drawing.Point(686, 190);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(580, 481);
+            this.pictureBox2.Size = new System.Drawing.Size(550, 550);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox2.TabIndex = 5;
             this.pictureBox2.TabStop = false;
@@ -173,7 +173,7 @@
             // 
             // CAtext
             // 
-            this.CAtext.Location = new System.Drawing.Point(28, 174);
+            this.CAtext.Location = new System.Drawing.Point(28, 160);
             this.CAtext.Margin = new System.Windows.Forms.Padding(4);
             this.CAtext.Name = "CAtext";
             this.CAtext.Size = new System.Drawing.Size(119, 22);
@@ -262,7 +262,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1403, 709);
+            this.ClientSize = new System.Drawing.Size(1403, 760);
             this.Controls.Add(this.Threshold);
             this.Controls.Add(this.BinaryImage);
             this.Controls.Add(this.GaussianFilter);

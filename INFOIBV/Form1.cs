@@ -19,7 +19,6 @@ namespace INFOIBV
         float sigma;
         int size;
         float[,] Gaussiankernel;
-        int[,] ImageWithGaussianFilter;
 
         public INFOIBV()
         {
@@ -71,10 +70,9 @@ namespace INFOIBV
             //GaussianFilter
             if (GaussianFilter.Checked)
             {
-                sigma = float.Parse(this.GFsigma.Text);
-                size = int.Parse(this.GFsize.Text); // minimum size: 1
+                sigma = float.Parse(GFsigma.Text);
+                size = int.Parse(GFsize.Text); // minimum size: 1
                 Gaussiankernel = GaussianKernel(size, sigma);
-                ImageWithGaussianFilter = new int[InputImage.Size.Width, InputImage.Size.Height];
             }
 
             // Run filters
@@ -113,25 +111,6 @@ namespace INFOIBV
                     }
 
                     Image[x, y] = updatedColor;                             // Set the new pixel color at coordinate (x,y)
-
-                    //GaussianFilter
-                    if (GaussianFilter.Checked)
-                    {
-                        float value = 0;
-                        for (int n = -size; n < size; n++)
-                        {
-                            for (int m = -size; m < size; m++)
-                            {
-                                //Debug.Write(Gaussiankernel[n+size, m + size] + " " + toGrayscale(Image[truncate(x + n), truncate(y + m)]) + " ");
-                                if (x + n >= InputImage.Size.Width || x + n < 0 || y + m >= InputImage.Size.Height || y + m < 0)
-                                    continue;
-                                value += Gaussiankernel[n+size, m+size] * toGrayscale(Image[x + n, y + m]);
-                            }
-                        }
-                        //Debug.WriteLine(value);
-                        ImageWithGaussianFilter[x, y] = (int)value;
-                    }
-
                     progressBar.PerformStep();                              // Increment progress bar
                 }
             }
@@ -139,15 +118,7 @@ namespace INFOIBV
             //Gaussian Filter
             if (GaussianFilter.Checked)
             {
-                for (int x = 0; x < InputImage.Size.Width; x++)
-                {
-                    for (int y = 0; y < InputImage.Size.Height; y++)
-                    {
-                        ImageWithGaussianFilter[x, y] = truncate(ImageWithGaussianFilter[x, y]);
-                        Color updatedColor = Color.FromArgb(ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y], ImageWithGaussianFilter[x, y]);
-                        Image[x, y] = updatedColor;
-                    }
-                }
+                Image = applyKernel(Image, Gaussiankernel);
             }
             //==========================================================================================
 
@@ -162,6 +133,47 @@ namespace INFOIBV
             
             pictureBox2.Image = (Image)OutputImage;                         // Display output image
             progressBar.Visible = false;                                    // Hide progress bar
+        }
+
+        private Color[,] applyKernel(Color[,] Image, float[,] kernel)
+        {
+            int[,] ImageWithkernel = new int[InputImage.Size.Width, InputImage.Size.Height];
+            int size = ((int)Math.Sqrt(kernel.Length)-1)/ 2;
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    float value = 0;
+                    for (int n = -size; n < size; n++)
+                    {
+                        if (x + size >= InputImage.Size.Width || x - size < 0 || y + size >= InputImage.Size.Height || y - size < 0)
+                            break;
+                        for (int m = -size; m < size; m++)
+                        {
+                            value += kernel[n + size, m + size] * toGrayscale(Image[x + n, y + m]);
+                        }
+                    }
+                    ImageWithkernel[x, y] = (int)value;
+                }
+            }
+
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    if (x >= InputImage.Size.Width - size || x < size || y >= InputImage.Size.Height - size || y < size)
+                    {
+                        int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size), size);
+                        int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size), size);
+                        Image[x, y] = Color.FromArgb(ImageWithkernel[x2, y2], ImageWithkernel[x2, y2], ImageWithkernel[x2, y2]);
+                        continue;
+                    }
+                    int color = truncate(ImageWithkernel[Math.Max(Math.Min(x,),0), y]);
+                    Color updatedColor = Color.FromArgb(color, color, color);
+                    Image[x, y] = updatedColor;
+                }
+            }
+            return Image;
         }
 
         private int toGrayscale(Color pixelColor)
