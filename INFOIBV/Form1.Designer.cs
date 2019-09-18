@@ -43,12 +43,12 @@
             this.CAtext = new System.Windows.Forms.TextBox();
             this.GFsize = new System.Windows.Forms.TextBox();
             this.GFsigma = new System.Windows.Forms.TextBox();
-            this.LinearFiltering = new System.Windows.Forms.TextBox();
-            this.NonlinearFiltering = new System.Windows.Forms.TextBox();
-            this.EdgeDetection = new System.Windows.Forms.TextBox();
             this.GaussianFilter = new System.Windows.Forms.CheckBox();
             this.BinaryImage = new System.Windows.Forms.CheckBox();
             this.Threshold = new System.Windows.Forms.TextBox();
+            this.EdgeDetection = new System.Windows.Forms.CheckBox();
+            this.BorderHandling = new System.Windows.Forms.ComboBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ContrastAdjustment)).BeginInit();
@@ -150,7 +150,7 @@
             // 
             // ContrastAdjustment
             // 
-            this.ContrastAdjustment.Location = new System.Drawing.Point(17, 126);
+            this.ContrastAdjustment.Location = new System.Drawing.Point(155, 88);
             this.ContrastAdjustment.Margin = new System.Windows.Forms.Padding(4);
             this.ContrastAdjustment.Maximum = 128;
             this.ContrastAdjustment.Minimum = 1;
@@ -164,7 +164,7 @@
             // 
             this.ContrastAdjustmentText.BackColor = System.Drawing.SystemColors.Menu;
             this.ContrastAdjustmentText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ContrastAdjustmentText.Location = new System.Drawing.Point(17, 102);
+            this.ContrastAdjustmentText.Location = new System.Drawing.Point(167, 65);
             this.ContrastAdjustmentText.Margin = new System.Windows.Forms.Padding(4);
             this.ContrastAdjustmentText.Name = "ContrastAdjustmentText";
             this.ContrastAdjustmentText.Size = new System.Drawing.Size(133, 15);
@@ -173,7 +173,7 @@
             // 
             // CAtext
             // 
-            this.CAtext.Location = new System.Drawing.Point(28, 160);
+            this.CAtext.Location = new System.Drawing.Point(167, 131);
             this.CAtext.Margin = new System.Windows.Forms.Padding(4);
             this.CAtext.Name = "CAtext";
             this.CAtext.Size = new System.Drawing.Size(119, 22);
@@ -181,7 +181,7 @@
             // 
             // GFsize
             // 
-            this.GFsize.Location = new System.Drawing.Point(226, 95);
+            this.GFsize.Location = new System.Drawing.Point(389, 95);
             this.GFsize.Margin = new System.Windows.Forms.Padding(4);
             this.GFsize.Name = "GFsize";
             this.GFsize.Size = new System.Drawing.Size(49, 22);
@@ -189,49 +189,16 @@
             // 
             // GFsigma
             // 
-            this.GFsigma.Location = new System.Drawing.Point(283, 95);
+            this.GFsigma.Location = new System.Drawing.Point(465, 95);
             this.GFsigma.Margin = new System.Windows.Forms.Padding(4);
             this.GFsigma.Name = "GFsigma";
             this.GFsigma.Size = new System.Drawing.Size(49, 22);
             this.GFsigma.TabIndex = 13;
             // 
-            // LinearFiltering
-            // 
-            this.LinearFiltering.BackColor = System.Drawing.SystemColors.Menu;
-            this.LinearFiltering.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LinearFiltering.Location = new System.Drawing.Point(416, 65);
-            this.LinearFiltering.Margin = new System.Windows.Forms.Padding(4);
-            this.LinearFiltering.Name = "LinearFiltering";
-            this.LinearFiltering.Size = new System.Drawing.Size(133, 15);
-            this.LinearFiltering.TabIndex = 14;
-            this.LinearFiltering.Text = "Linear Filtering";
-            // 
-            // NonlinearFiltering
-            // 
-            this.NonlinearFiltering.BackColor = System.Drawing.SystemColors.Menu;
-            this.NonlinearFiltering.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.NonlinearFiltering.Location = new System.Drawing.Point(580, 66);
-            this.NonlinearFiltering.Margin = new System.Windows.Forms.Padding(4);
-            this.NonlinearFiltering.Name = "NonlinearFiltering";
-            this.NonlinearFiltering.Size = new System.Drawing.Size(133, 15);
-            this.NonlinearFiltering.TabIndex = 15;
-            this.NonlinearFiltering.Text = "Nonlinear Filtering";
-            // 
-            // EdgeDetection
-            // 
-            this.EdgeDetection.BackColor = System.Drawing.SystemColors.Menu;
-            this.EdgeDetection.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.EdgeDetection.Location = new System.Drawing.Point(748, 65);
-            this.EdgeDetection.Margin = new System.Windows.Forms.Padding(4);
-            this.EdgeDetection.Name = "EdgeDetection";
-            this.EdgeDetection.Size = new System.Drawing.Size(133, 15);
-            this.EdgeDetection.TabIndex = 16;
-            this.EdgeDetection.Text = "Edge Detection";
-            // 
             // GaussianFilter
             // 
             this.GaussianFilter.AutoSize = true;
-            this.GaussianFilter.Location = new System.Drawing.Point(226, 64);
+            this.GaussianFilter.Location = new System.Drawing.Point(389, 65);
             this.GaussianFilter.Margin = new System.Windows.Forms.Padding(4);
             this.GaussianFilter.Name = "GaussianFilter";
             this.GaussianFilter.Size = new System.Drawing.Size(125, 21);
@@ -242,7 +209,7 @@
             // BinaryImage
             // 
             this.BinaryImage.AutoSize = true;
-            this.BinaryImage.Location = new System.Drawing.Point(936, 66);
+            this.BinaryImage.Location = new System.Drawing.Point(744, 65);
             this.BinaryImage.Margin = new System.Windows.Forms.Padding(4);
             this.BinaryImage.Name = "BinaryImage";
             this.BinaryImage.Size = new System.Drawing.Size(112, 21);
@@ -252,23 +219,60 @@
             // 
             // Threshold
             // 
-            this.Threshold.Location = new System.Drawing.Point(936, 95);
+            this.Threshold.Location = new System.Drawing.Point(744, 95);
             this.Threshold.Margin = new System.Windows.Forms.Padding(4);
             this.Threshold.Name = "Threshold";
             this.Threshold.Size = new System.Drawing.Size(49, 22);
             this.Threshold.TabIndex = 20;
+            // 
+            // EdgeDetection
+            // 
+            this.EdgeDetection.AutoSize = true;
+            this.EdgeDetection.Location = new System.Drawing.Point(570, 64);
+            this.EdgeDetection.Margin = new System.Windows.Forms.Padding(4);
+            this.EdgeDetection.Name = "EdgeDetection";
+            this.EdgeDetection.Size = new System.Drawing.Size(125, 21);
+            this.EdgeDetection.TabIndex = 21;
+            this.EdgeDetection.Text = "Edge detection";
+            this.EdgeDetection.UseVisualStyleBackColor = true;
+            // 
+            // BorderHandling
+            // 
+            this.BorderHandling.FormattingEnabled = true;
+            this.BorderHandling.Items.AddRange(new object[] {
+            "Empty borders",
+            "Replicate rows",
+            "Wrap",
+            "Reflect"});
+            this.BorderHandling.Location = new System.Drawing.Point(965, 88);
+            this.BorderHandling.Name = "BorderHandling";
+            this.BorderHandling.Size = new System.Drawing.Size(121, 24);
+            this.BorderHandling.TabIndex = 22;
+            this.BorderHandling.Text = "Empty borders";
+            this.BorderHandling.UseWaitCursor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.Menu;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Location = new System.Drawing.Point(965, 64);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(133, 15);
+            this.textBox1.TabIndex = 23;
+            this.textBox1.Text = "Border Handling";
             // 
             // INFOIBV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1403, 760);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.BorderHandling);
+            this.Controls.Add(this.EdgeDetection);
             this.Controls.Add(this.Threshold);
             this.Controls.Add(this.BinaryImage);
             this.Controls.Add(this.GaussianFilter);
-            this.Controls.Add(this.EdgeDetection);
-            this.Controls.Add(this.NonlinearFiltering);
-            this.Controls.Add(this.LinearFiltering);
             this.Controls.Add(this.GFsigma);
             this.Controls.Add(this.GFsize);
             this.Controls.Add(this.CAtext);
@@ -312,12 +316,12 @@
         private System.Windows.Forms.TextBox CAtext;
         private System.Windows.Forms.TextBox GFsize;
         private System.Windows.Forms.TextBox GFsigma;
-        private System.Windows.Forms.TextBox LinearFiltering;
-        private System.Windows.Forms.TextBox NonlinearFiltering;
-        private System.Windows.Forms.TextBox EdgeDetection;
         private System.Windows.Forms.CheckBox GaussianFilter;
         private System.Windows.Forms.CheckBox BinaryImage;
         private System.Windows.Forms.TextBox Threshold;
+        private System.Windows.Forms.CheckBox EdgeDetection;
+        private System.Windows.Forms.ComboBox BorderHandling;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

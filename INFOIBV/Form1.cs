@@ -115,10 +115,46 @@ namespace INFOIBV
                 }
             }
 
+            //get 2d array with grayscale values;
+            int[,] grayscaleImage = new int[InputImage.Size.Width, InputImage.Size.Height];
+            for (int i = 0; i < InputImage.Size.Width; i++)
+            {
+                for (int j = 0; j < InputImage.Size.Height; j++)
+                {
+                    grayscaleImage[i, j] = toGrayscale(Image[i, j]);
+                }
+            }
+
             //Gaussian Filter
             if (GaussianFilter.Checked)
             {
-                Image = applyKernel(Image, Gaussiankernel);
+                grayscaleImage = applyKernel(grayscaleImage, Gaussiankernel);
+            }
+
+            //Sobel edge Filter
+            if (EdgeDetection.Checked)
+            {
+                int[,] ImageX = applyKernel(grayscaleImage, createEdgeKernel(true));
+                int[,] ImageY = applyKernel(grayscaleImage, createEdgeKernel(false));
+                for (int i = 0; i < Image.GetLength(0); i++)
+                {
+                    for (int j = 0; j < Image.GetLength(1); j++)
+                    {
+                        //Debug.WriteLine(ImageX[i, j]);
+                        int color = (int)Math.Sqrt(Math.Pow(ImageX[i, j], 2) + Math.Pow(ImageY[i, j], 2));
+                        grayscaleImage[i, j] = color;
+                    }
+                }
+            }
+
+            //truncate and return grayscale image to actual image
+            for (int i = 0; i < InputImage.Size.Width; i++)
+            {
+                for (int j = 0; j < InputImage.Size.Height; j++)
+                {
+                    int color = truncate(grayscaleImage[i, j]);
+                    Image[i, j] = Color.FromArgb(color, color, color);
+                }
             }
             //==========================================================================================
 
@@ -135,7 +171,8 @@ namespace INFOIBV
             progressBar.Visible = false;                                    // Hide progress bar
         }
 
-        private Color[,] applyKernel(Color[,] Image, float[,] kernel)
+        //Apply a kernel, return 2d array of grayscale int for color
+        private int[,] applyKernel(int[,] img, float[,] kernel)
         {
             int[,] ImageWithkernel = new int[InputImage.Size.Width, InputImage.Size.Height];
             int size = ((int)Math.Sqrt(kernel.Length)-1)/ 2;
@@ -144,13 +181,13 @@ namespace INFOIBV
                 for (int y = 0; y < InputImage.Size.Height; y++)
                 {
                     float value = 0;
-                    for (int n = -size; n < size; n++)
+                    for (int n = -size; n <= size; n++)
                     {
                         if (x + size >= InputImage.Size.Width || x - size < 0 || y + size >= InputImage.Size.Height || y - size < 0)
                             break;
-                        for (int m = -size; m < size; m++)
+                        for (int m = -size; m <= size; m++)
                         {
-                            value += kernel[n + size, m + size] * toGrayscale(Image[x + n, y + m]);
+                            value += kernel[n + size, m + size] * img[x + n, y + m];
                         }
                     }
                     ImageWithkernel[x, y] = (int)value;
@@ -161,19 +198,65 @@ namespace INFOIBV
             {
                 for (int y = 0; y < InputImage.Size.Height; y++)
                 {
-                    if (x >= InputImage.Size.Width - size || x < size || y >= InputImage.Size.Height - size || y < size)
+                    if (BorderHandling.SelectedIndex == 1) //Replicate rows
                     {
-                        //int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size), size);
-                        //int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size), size);
-                        //Image[x, y] = Color.FromArgb(ImageWithkernel[x2, y2], ImageWithkernel[x2, y2], ImageWithkernel[x2, y2]);
-                        //continue;
+                        int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size - 1), size);
+                        int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size - 1), size);
+                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
                     }
-                    int color = truncate(ImageWithkernel[x,y]);
-                    Color updatedColor = Color.FromArgb(color, color, color);
-                    Image[x, y] = updatedColor;
+                    else if (BorderHandling.SelectedIndex == 2) //Wrap
+                    {
+                        int x2 = x;
+                        int y2 = y;
+                        if (x < size)
+                        {
+                            x2 = (x - size) % (InputImage.Size.Width - size - 1);
+                            if (x2 < 0)
+                                x2 += (InputImage.Size.Width - size - 1);
+                        }
+                        if (y < size)
+                        {
+                            y2 = (y - size) % (InputImage.Size.Height - size - 1);
+                            if (y2 < 0)
+                                y2 += (InputImage.Size.Height - size - 1);
+                        }
+                        if (x > InputImage.Size.Width - size - 1)
+                            x2 = (x + size) % (InputImage.Size.Width - size - 1);
+                        if (y > InputImage.Size.Height - size - 1)
+                            y2 = (y + size) % (InputImage.Size.Height - size - 1);
+                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
+                    }
+                    else if(BorderHandling.SelectedIndex == 3) //Reflect
+                    {
+                        int x2 = x;
+                        int y2 = y;
+                        if(x < size)
+                            x2 = size + (size - x);
+                        if(y < size)
+                            y2 = size + (size - y);
+                        if(x > InputImage.Size.Width - size - 1)
+                            x2 = InputImage.Size.Width - size - 1 - (x-(InputImage.Size.Width - size - 1));
+                        if (y > InputImage.Size.Height - size - 1)
+                            y2 = InputImage.Size.Height - size - 1 - (y-(InputImage.Size.Height - size - 1));
+                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
+                    }
+                    else //Empty borders
+                    {
+                        ImageWithkernel[x,y] = ImageWithkernel[x,y];
+                    }
                 }
             }
-            return Image;
+            return ImageWithkernel;
+        }
+
+        private float[,] createEdgeKernel(bool x = true)
+        {
+            float[,] kernel = new float[,] { { -1, 0, 1 }, {-2,0,2}, {-1,0,1} };
+            if(!x)
+            {
+                kernel = new float[,] { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
+            }
+            return kernel;
         }
 
         private int toGrayscale(Color pixelColor)
@@ -205,10 +288,8 @@ namespace INFOIBV
                 for (int y = -size; y <= size; y++)
                 {
                     kernel[x + size, y + size] = (1/total)*kernel[x + size, y + size];
-                    Debug.Write(kernel[x + size, y + size] + " ");
                     isit1 += kernel[x + size, y + size];
                 }
-                Debug.WriteLine("");
             }
             return kernel;
         }
@@ -224,6 +305,54 @@ namespace INFOIBV
         {
             float ContrastCorrection = (259f * (ContrastAdjustment.Value + 255f)) / (255f * (259f - ContrastAdjustment.Value));
             CAtext.Text = ContrastAdjustment.Value + " " + ContrastCorrection;
+        }
+
+
+
+
+
+
+
+        //REMOVE
+        private Color[,] applySobelEdge(Color[,] Image)
+        {
+            float[,] kernelX = createEdgeKernel(true);
+            float[,] kernelY = createEdgeKernel(false);
+            int[,] ImageWithkernel = new int[InputImage.Size.Width, InputImage.Size.Height];
+            int size = ((int)Math.Sqrt(kernelX.Length) - 1) / 2;
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    float valueX = 0, valueY = 0;
+                    for (int n = -size; n <= size; n++)
+                    {
+                        if (x + size >= InputImage.Size.Width || x - size < 0 || y + size >= InputImage.Size.Height || y - size < 0)
+                            break;
+                        for (int m = -size; m <= size; m++)
+                        {
+                            //valueX += kernelX[n + size, m + size] * toGrayscale(Image[x + n, y + m]);
+                            valueY += kernelY[n + size, m + size] * toGrayscale(Image[x + n, y + m]);
+                            //Debug.WriteLine(value);
+                        }
+                    }
+                    //Debug.WriteLine("");
+                    ImageWithkernel[x, y] = (int)Math.Sqrt(Math.Pow(valueX,2)+Math.Pow(valueY,2));
+                }
+            }
+
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size - 1), size);
+                    int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size - 1), size);
+                    int color = truncate(ImageWithkernel[x2, y2]);
+                    Color updatedColor = Color.FromArgb(color, color, color);
+                    Image[x, y] = updatedColor;
+                }
+            }
+            return Image;
         }
     }
 }
