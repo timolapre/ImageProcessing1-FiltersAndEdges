@@ -90,13 +90,6 @@ namespace INFOIBV
                         updatedColor = Color.FromArgb(grayscale, grayscale, grayscale); //Color.FromArgb(255 - pixelColor.R, 255 - pixelColor.G, 255 - pixelColor.B); // Negative image
                     }
 
-                    //Contrast adjustment
-                    float ContrastCorrection = ContrastAdjustment.Value; //(259f * (ContrastAdjustment.Value + 255f)) / (255f*(259f - ContrastAdjustment.Value));
-                    int red = truncate((int)(ContrastCorrection * (updatedColor.R - 128) + 128));
-                    int green = truncate((int)(ContrastCorrection * (updatedColor.G - 128) + 128));
-                    int blue = truncate((int)(ContrastCorrection * (updatedColor.B - 128) + 128));
-                    updatedColor = Color.FromArgb(red, green, blue);
-
                     if (BinaryImage.Checked)
                     {
                         //Debug.WriteLine(toGrayscale(pixelColor) + " " + int.Parse(Threshold.Text));
@@ -123,6 +116,11 @@ namespace INFOIBV
                 {
                     grayscaleImage[i, j] = toGrayscale(Image[i, j]);
                 }
+            }
+
+            if (ContrastAdjustment.Checked)
+            {
+                grayscaleImage = fullRangeContrastImage(grayscaleImage);
             }
 
             //Gaussian Filter
@@ -169,6 +167,35 @@ namespace INFOIBV
             
             pictureBox2.Image = (Image)OutputImage;                         // Display output image
             progressBar.Visible = false;                                    // Hide progress bar
+        }
+
+        private int[,] fullRangeContrastImage(int[,] img)
+        {
+            int[,] ImageWithkernel = new int[InputImage.Size.Width, InputImage.Size.Height];
+            float min = 255;
+            float max = 0;
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    if (img[x,y] < min)
+                        min = img[x, y];
+                    if (img[x,y] > max)
+                        max = img[x, y];
+                }
+            }
+
+            Debug.WriteLine(min + " " + max);
+
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    ImageWithkernel[x, y] = (int)((img[x, y] - min)/(max - min)*255);
+                }
+            }
+
+            return ImageWithkernel;
         }
 
         //Apply a kernel, return 2d array of grayscale int for color
@@ -242,7 +269,7 @@ namespace INFOIBV
                     }
                     else //Empty borders
                     {
-                        ImageWithkernel[x,y] = ImageWithkernel[x,y];
+                        //ImageWithkernel[x,y] = ImageWithkernel[x,y];
                     }
                 }
             }
@@ -299,12 +326,6 @@ namespace INFOIBV
             if (OutputImage == null) return;                                // Get out if no output image
             if (saveImageDialog.ShowDialog() == DialogResult.OK)
                 OutputImage.Save(saveImageDialog.FileName);                 // Save the output image
-        }
-
-        private void ContrastAdjustment_Scroll(object sender, EventArgs e)
-        {
-            float ContrastCorrection = (259f * (ContrastAdjustment.Value + 255f)) / (255f * (259f - ContrastAdjustment.Value));
-            CAtext.Text = ContrastAdjustment.Value + " " + ContrastCorrection;
         }
 
 

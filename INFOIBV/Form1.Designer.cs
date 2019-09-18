@@ -38,9 +38,6 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.Grayscale = new System.Windows.Forms.CheckBox();
-            this.ContrastAdjustment = new System.Windows.Forms.TrackBar();
-            this.ContrastAdjustmentText = new System.Windows.Forms.TextBox();
-            this.CAtext = new System.Windows.Forms.TextBox();
             this.GFsize = new System.Windows.Forms.TextBox();
             this.GFsigma = new System.Windows.Forms.TextBox();
             this.GaussianFilter = new System.Windows.Forms.CheckBox();
@@ -49,9 +46,9 @@
             this.EdgeDetection = new System.Windows.Forms.CheckBox();
             this.BorderHandling = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.ContrastAdjustment = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ContrastAdjustment)).BeginInit();
             this.SuspendLayout();
             // 
             // LoadImageButton
@@ -148,37 +145,6 @@
             this.Grayscale.Text = "Grayscale";
             this.Grayscale.UseVisualStyleBackColor = true;
             // 
-            // ContrastAdjustment
-            // 
-            this.ContrastAdjustment.Location = new System.Drawing.Point(155, 88);
-            this.ContrastAdjustment.Margin = new System.Windows.Forms.Padding(4);
-            this.ContrastAdjustment.Maximum = 128;
-            this.ContrastAdjustment.Minimum = 1;
-            this.ContrastAdjustment.Name = "ContrastAdjustment";
-            this.ContrastAdjustment.Size = new System.Drawing.Size(139, 56);
-            this.ContrastAdjustment.TabIndex = 8;
-            this.ContrastAdjustment.Value = 1;
-            this.ContrastAdjustment.Scroll += new System.EventHandler(this.ContrastAdjustment_Scroll);
-            // 
-            // ContrastAdjustmentText
-            // 
-            this.ContrastAdjustmentText.BackColor = System.Drawing.SystemColors.Menu;
-            this.ContrastAdjustmentText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ContrastAdjustmentText.Location = new System.Drawing.Point(167, 65);
-            this.ContrastAdjustmentText.Margin = new System.Windows.Forms.Padding(4);
-            this.ContrastAdjustmentText.Name = "ContrastAdjustmentText";
-            this.ContrastAdjustmentText.Size = new System.Drawing.Size(133, 15);
-            this.ContrastAdjustmentText.TabIndex = 9;
-            this.ContrastAdjustmentText.Text = "Contrast Adjustment";
-            // 
-            // CAtext
-            // 
-            this.CAtext.Location = new System.Drawing.Point(167, 131);
-            this.CAtext.Margin = new System.Windows.Forms.Padding(4);
-            this.CAtext.Name = "CAtext";
-            this.CAtext.Size = new System.Drawing.Size(119, 22);
-            this.CAtext.TabIndex = 10;
-            // 
             // GFsize
             // 
             this.GFsize.Location = new System.Drawing.Point(389, 95);
@@ -262,11 +228,23 @@
             this.textBox1.TabIndex = 23;
             this.textBox1.Text = "Border Handling";
             // 
+            // ContrastAdjustment
+            // 
+            this.ContrastAdjustment.AutoSize = true;
+            this.ContrastAdjustment.Location = new System.Drawing.Point(184, 65);
+            this.ContrastAdjustment.Margin = new System.Windows.Forms.Padding(4);
+            this.ContrastAdjustment.Name = "ContrastAdjustment";
+            this.ContrastAdjustment.Size = new System.Drawing.Size(156, 21);
+            this.ContrastAdjustment.TabIndex = 24;
+            this.ContrastAdjustment.Text = "Contrast adjustment";
+            this.ContrastAdjustment.UseVisualStyleBackColor = true;
+            // 
             // INFOIBV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1403, 760);
+            this.Controls.Add(this.ContrastAdjustment);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.BorderHandling);
             this.Controls.Add(this.EdgeDetection);
@@ -275,9 +253,6 @@
             this.Controls.Add(this.GaussianFilter);
             this.Controls.Add(this.GFsigma);
             this.Controls.Add(this.GFsize);
-            this.Controls.Add(this.CAtext);
-            this.Controls.Add(this.ContrastAdjustmentText);
-            this.Controls.Add(this.ContrastAdjustment);
             this.Controls.Add(this.Grayscale);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.pictureBox2);
@@ -293,7 +268,6 @@
             this.Text = "INFOIBV";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ContrastAdjustment)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -311,9 +285,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.CheckBox Grayscale;
-        private System.Windows.Forms.TrackBar ContrastAdjustment;
-        private System.Windows.Forms.TextBox ContrastAdjustmentText;
-        private System.Windows.Forms.TextBox CAtext;
         private System.Windows.Forms.TextBox GFsize;
         private System.Windows.Forms.TextBox GFsigma;
         private System.Windows.Forms.CheckBox GaussianFilter;
@@ -322,6 +293,7 @@
         private System.Windows.Forms.CheckBox EdgeDetection;
         private System.Windows.Forms.ComboBox BorderHandling;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox ContrastAdjustment;
     }
 }
 
