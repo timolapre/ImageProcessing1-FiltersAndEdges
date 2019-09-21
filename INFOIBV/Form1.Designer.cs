@@ -46,7 +46,9 @@
             this.EdgeDetection = new System.Windows.Forms.CheckBox();
             this.BorderHandling = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.nonlinear = new System.Windows.Forms.CheckBox();
             this.ContrastAdjustment = new System.Windows.Forms.CheckBox();
+            this.NLsize = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -221,7 +223,7 @@
             // 
             this.textBox1.BackColor = System.Drawing.SystemColors.Menu;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(965, 64);
+            this.textBox1.Location = new System.Drawing.Point(985, 64);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(133, 15);
@@ -238,6 +240,25 @@
             this.ContrastAdjustment.TabIndex = 24;
             this.ContrastAdjustment.Text = "Contrast adjustment";
             this.ContrastAdjustment.UseVisualStyleBackColor = true;
+            //
+            // non-linear
+            //
+            this.nonlinear.AutoSize = true;
+            this.nonlinear.Location = new System.Drawing.Point(870, 65);
+            this.nonlinear.Margin = new System.Windows.Forms.Padding(4);
+            this.nonlinear.Name = "Non-linear";
+            this.nonlinear.Size = new System.Drawing.Size(112, 21);
+            this.nonlinear.TabIndex = 25;
+            this.nonlinear.Text = "Non-linear";
+            this.nonlinear.UseVisualStyleBackColor = true;
+            // 
+            // non-linear size
+            // 
+            this.NLsize.Location = new System.Drawing.Point(870, 95);
+            this.NLsize.Margin = new System.Windows.Forms.Padding(4);
+            this.NLsize.Name = "NLsize";
+            this.NLsize.Size = new System.Drawing.Size(49, 22);
+            this.NLsize.TabIndex = 26;
             // 
             // INFOIBV
             // 
@@ -261,6 +282,8 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.imageFileName);
             this.Controls.Add(this.LoadImageButton);
+            this.Controls.Add(this.nonlinear);
+            this.Controls.Add(this.NLsize);
             this.Location = new System.Drawing.Point(10, 10);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "INFOIBV";
@@ -294,6 +317,8 @@
         private System.Windows.Forms.ComboBox BorderHandling;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckBox ContrastAdjustment;
+        private System.Windows.Forms.CheckBox nonlinear;
+        private System.Windows.Forms.TextBox NLsize;
     }
 }
 

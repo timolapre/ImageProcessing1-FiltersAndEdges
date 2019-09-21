@@ -16,3 +16,12 @@ E:\OneDrive - Universiteit Utrecht\Documents\GitHubResporities\ImageProcessing1-
 E:\OneDrive - Universiteit Utrecht\Documents\GitHubResporities\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.csproj.CoreCompileInputs.cache
 E:\OneDrive - Universiteit Utrecht\Documents\GitHubResporities\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.exe
 E:\OneDrive - Universiteit Utrecht\Documents\GitHubResporities\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.pdb
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\bin\Debug\INFOIBV.exe
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\bin\Debug\INFOIBV.pdb
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.csprojResolveAssemblyReference.cache
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.INFOIBV.resources
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.Properties.Resources.resources
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.csproj.GenerateResource.Cache
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.csproj.CoreCompileInputs.cache
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.exe
+C:\Users\timgo\Documents\GitHub\ImageProcessing1-FiltersAndEdges\INFOIBV\obj\x86\Debug\INFOIBV.pdb

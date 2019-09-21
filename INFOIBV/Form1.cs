@@ -145,6 +145,13 @@ namespace INFOIBV
                 }
             }
 
+            // Median filter
+            if (nonlinear.Checked)
+            {
+                int size = int.Parse(NLsize.Text);
+                grayscaleImage = NLfilter(size, grayscaleImage);
+            }
+
             //truncate and return grayscale image to actual image
             for (int i = 0; i < InputImage.Size.Width; i++)
             {
@@ -154,6 +161,7 @@ namespace INFOIBV
                     Image[i, j] = Color.FromArgb(color, color, color);
                 }
             }
+
             //==========================================================================================
 
             // Copy array to output Bitmap
@@ -167,6 +175,31 @@ namespace INFOIBV
             
             pictureBox2.Image = (Image)OutputImage;                         // Display output image
             progressBar.Visible = false;                                    // Hide progress bar
+        }
+
+        private int [,] NLfilter(int size, int[,] pic)
+        {
+            int[,] withfilter = new int[InputImage.Size.Width, InputImage.Size.Height];
+            int[] filter = new int[((size * 2) + 1) * ((size * 2) + 1)];
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    if (x + size >= InputImage.Size.Width || x - size < 0 || y + size >= InputImage.Size.Height || y - size < 0)
+                        continue;
+                    int count = 0;
+                    for (int i = -size; i <= size; i++)
+                    {
+                        for (int j = -size; j <= size; j++)
+                        {
+                            filter[count++] = pic[x + size, y + size];
+                        }
+                    }
+                    Array.Sort(filter);
+                    withfilter[x, y] = filter[count/2];
+                }
+            }
+            return withfilter;
         }
 
         private int[,] fullRangeContrastImage(int[,] img)
