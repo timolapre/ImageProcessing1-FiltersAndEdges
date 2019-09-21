@@ -177,7 +177,7 @@ namespace INFOIBV
             progressBar.Visible = false;                                    // Hide progress bar
         }
 
-        private int [,] NLfilter(int size, int[,] pic)
+        private int[,] NLfilter(int size, int[,] pic)
         {
             int[,] withfilter = new int[InputImage.Size.Width, InputImage.Size.Height];
             int[] filter = new int[((size * 2) + 1) * ((size * 2) + 1)];
@@ -185,9 +185,9 @@ namespace INFOIBV
             {
                 for (int y = 0; y < InputImage.Size.Height; y++)
                 {
+                    int count = 0;
                     if (x + size >= InputImage.Size.Width || x - size < 0 || y + size >= InputImage.Size.Height || y - size < 0)
                         continue;
-                    int count = 0;
                     for (int i = -size; i <= size; i++)
                     {
                         for (int j = -size; j <= size; j++)
@@ -199,7 +199,8 @@ namespace INFOIBV
                     withfilter[x, y] = filter[count/2];
                 }
             }
-            withfilter = borderHandling(withfilter);
+
+            borderHandling(withfilter);
             return withfilter;
         }
 
@@ -242,10 +243,10 @@ namespace INFOIBV
                 for (int y = 0; y < InputImage.Size.Height; y++)
                 {
                     float value = 0;
+                    if (x + size >= InputImage.Size.Width || x - size < 0 || y + size >= InputImage.Size.Height || y - size < 0)
+                        continue;
                     for (int n = -size; n <= size; n++)
                     {
-                        if (x + size >= InputImage.Size.Width || x - size < 0 || y + size >= InputImage.Size.Height || y - size < 0)
-                            break;
                         for (int m = -size; m <= size; m++)
                         {
                             value += kernel[n + size, m + size] * img[x + n, y + m];
@@ -255,7 +256,7 @@ namespace INFOIBV
                 }
             }
 
-            ImageWithkernel = borderHandling(ImageWithkernel);
+            borderHandling(ImageWithkernel);
             return ImageWithkernel;
         }
 
@@ -311,9 +312,8 @@ namespace INFOIBV
                 OutputImage.Save(saveImageDialog.FileName);                 // Save the output image
         }
 
-        private int[,] borderHandling(int[,] img)
+        private int[,] borderHandling(int[,] ImageWithkernel)
         {
-            int[,] ImageWithkernel = new int[InputImage.Size.Width, InputImage.Size.Height];
             for (int x = 0; x < InputImage.Size.Width; x++)
             {
                 for (int y = 0; y < InputImage.Size.Height; y++)
@@ -322,7 +322,7 @@ namespace INFOIBV
                     {
                         int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size - 1), size);
                         int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size - 1), size);
-                        ImageWithkernel[x, y] = img[x2, y2];
+                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
                     }
                     else if (BorderHandling.SelectedIndex == 2) //Wrap
                     {
@@ -344,7 +344,7 @@ namespace INFOIBV
                             x2 = (x + size) % (InputImage.Size.Width - size - 1);
                         if (y > InputImage.Size.Height - size - 1)
                             y2 = (y + size) % (InputImage.Size.Height - size - 1);
-                        ImageWithkernel[x, y] = img[x2, y2];
+                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
                     }
                     else if (BorderHandling.SelectedIndex == 3) //Reflect
                     {
@@ -358,11 +358,11 @@ namespace INFOIBV
                             x2 = InputImage.Size.Width - size - 1 - (x - (InputImage.Size.Width - size - 1));
                         if (y > InputImage.Size.Height - size - 1)
                             y2 = InputImage.Size.Height - size - 1 - (y - (InputImage.Size.Height - size - 1));
-                        ImageWithkernel[x, y] = img[x2, y2];
+                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
                     }
                     else //Empty borders
                     {
-                        ImageWithkernel[x,y] = img[x,y];
+                        ImageWithkernel[x,y] = ImageWithkernel[x,y];
                     }
                 }
             }
