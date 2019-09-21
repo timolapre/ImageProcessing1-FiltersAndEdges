@@ -192,13 +192,14 @@ namespace INFOIBV
                     {
                         for (int j = -size; j <= size; j++)
                         {
-                            filter[count++] = pic[x + size, y + size];
+                            filter[count++] = pic[x + i, y + j];
                         }
                     }
                     Array.Sort(filter);
                     withfilter[x, y] = filter[count/2];
                 }
             }
+            withfilter = borderHandling(withfilter);
             return withfilter;
         }
 
@@ -254,58 +255,7 @@ namespace INFOIBV
                 }
             }
 
-            for (int x = 0; x < InputImage.Size.Width; x++)
-            {
-                for (int y = 0; y < InputImage.Size.Height; y++)
-                {
-                    if (BorderHandling.SelectedIndex == 1) //Replicate rows
-                    {
-                        int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size - 1), size);
-                        int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size - 1), size);
-                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
-                    }
-                    else if (BorderHandling.SelectedIndex == 2) //Wrap
-                    {
-                        int x2 = x;
-                        int y2 = y;
-                        if (x < size)
-                        {
-                            x2 = (x - size) % (InputImage.Size.Width - size - 1);
-                            if (x2 < 0)
-                                x2 += (InputImage.Size.Width - size - 1);
-                        }
-                        if (y < size)
-                        {
-                            y2 = (y - size) % (InputImage.Size.Height - size - 1);
-                            if (y2 < 0)
-                                y2 += (InputImage.Size.Height - size - 1);
-                        }
-                        if (x > InputImage.Size.Width - size - 1)
-                            x2 = (x + size) % (InputImage.Size.Width - size - 1);
-                        if (y > InputImage.Size.Height - size - 1)
-                            y2 = (y + size) % (InputImage.Size.Height - size - 1);
-                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
-                    }
-                    else if(BorderHandling.SelectedIndex == 3) //Reflect
-                    {
-                        int x2 = x;
-                        int y2 = y;
-                        if(x < size)
-                            x2 = size + (size - x);
-                        if(y < size)
-                            y2 = size + (size - y);
-                        if(x > InputImage.Size.Width - size - 1)
-                            x2 = InputImage.Size.Width - size - 1 - (x-(InputImage.Size.Width - size - 1));
-                        if (y > InputImage.Size.Height - size - 1)
-                            y2 = InputImage.Size.Height - size - 1 - (y-(InputImage.Size.Height - size - 1));
-                        ImageWithkernel[x, y] = ImageWithkernel[x2, y2];
-                    }
-                    else //Empty borders
-                    {
-                        //ImageWithkernel[x,y] = ImageWithkernel[x,y];
-                    }
-                }
-            }
+            ImageWithkernel = borderHandling(ImageWithkernel);
             return ImageWithkernel;
         }
 
@@ -359,6 +309,64 @@ namespace INFOIBV
             if (OutputImage == null) return;                                // Get out if no output image
             if (saveImageDialog.ShowDialog() == DialogResult.OK)
                 OutputImage.Save(saveImageDialog.FileName);                 // Save the output image
+        }
+
+        private int[,] borderHandling(int[,] img)
+        {
+            int[,] ImageWithkernel = new int[InputImage.Size.Width, InputImage.Size.Height];
+            for (int x = 0; x < InputImage.Size.Width; x++)
+            {
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                {
+                    if (BorderHandling.SelectedIndex == 1) //Replicate rows
+                    {
+                        int x2 = Math.Max(Math.Min(x, InputImage.Size.Width - size - 1), size);
+                        int y2 = Math.Max(Math.Min(y, InputImage.Size.Height - size - 1), size);
+                        ImageWithkernel[x, y] = img[x2, y2];
+                    }
+                    else if (BorderHandling.SelectedIndex == 2) //Wrap
+                    {
+                        int x2 = x;
+                        int y2 = y;
+                        if (x < size)
+                        {
+                            x2 = (x - size) % (InputImage.Size.Width - size - 1);
+                            if (x2 < 0)
+                                x2 += (InputImage.Size.Width - size - 1);
+                        }
+                        if (y < size)
+                        {
+                            y2 = (y - size) % (InputImage.Size.Height - size - 1);
+                            if (y2 < 0)
+                                y2 += (InputImage.Size.Height - size - 1);
+                        }
+                        if (x > InputImage.Size.Width - size - 1)
+                            x2 = (x + size) % (InputImage.Size.Width - size - 1);
+                        if (y > InputImage.Size.Height - size - 1)
+                            y2 = (y + size) % (InputImage.Size.Height - size - 1);
+                        ImageWithkernel[x, y] = img[x2, y2];
+                    }
+                    else if (BorderHandling.SelectedIndex == 3) //Reflect
+                    {
+                        int x2 = x;
+                        int y2 = y;
+                        if (x < size)
+                            x2 = size + (size - x);
+                        if (y < size)
+                            y2 = size + (size - y);
+                        if (x > InputImage.Size.Width - size - 1)
+                            x2 = InputImage.Size.Width - size - 1 - (x - (InputImage.Size.Width - size - 1));
+                        if (y > InputImage.Size.Height - size - 1)
+                            y2 = InputImage.Size.Height - size - 1 - (y - (InputImage.Size.Height - size - 1));
+                        ImageWithkernel[x, y] = img[x2, y2];
+                    }
+                    else //Empty borders
+                    {
+                        ImageWithkernel[x,y] = img[x,y];
+                    }
+                }
+            }
+            return ImageWithkernel;
         }
 
 
